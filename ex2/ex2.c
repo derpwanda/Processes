@@ -9,48 +9,90 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <sys/wait.h>
+#include <string.h>
 
 int main(void)
 {
     // Your code here 
-    char c;
     FILE *fp;
-    printf("Opening the file text.txt to read\n");
+    printf("Opening the file text.txt to read");
+    fp = fopen("text.txt", "w");    
 
-    fp = fopen("text.txt", "r\n");    
-
-    // if (fp == NULL)
-    // {
-    //     printf("Could not open text.txt");
-    //     return 1;
-    // } else {
-    //     while ((c = getc(fp)) != EOF)
-    //         //putchar(c);
-    //         printf("%c", c);
-    //         // printf("\n");
-    //     fclose(fp);
-    // }
-
-    // so it prints parent fork, then child fork, but prints the
-    // textfile from parent fork?
     int text_fork = fork();
+
     if (text_fork < 0)
     {
         printf("fork failed\n");
         exit(1);
+
     } else if (text_fork == 0)
     {
-        printf("child fork \n");
-        while ((c = getc(fp)) != EOF)
-            printf("%c", c);
-        fclose(fp);
+        printf("\nchild process \n");
+        char *child_str = "This is a child string!\n";
+        fwrite(child_str, sizeof(char), strlen(child_str), fp);
+
     } else
     {
-        printf("parent fork \n");
-        while ((c = getc(fp)) != EOF)
-            printf("%c", c);
-        fclose(fp);
+        //wait(NULL);
+        printf("\nparent process \n");
+        char *parent_str = "This is a parent string!\n";
+        fwrite(parent_str, sizeof(char), strlen(parent_str), fp);
+
     }
     
+    fclose(fp); // close after child and parent have a chance to write/read
     return 0;
 }
+
+    // fp = fopen("text.txt", "r"); 
+// if (fp == NULL)
+// {
+//     printf("Could not open text.txt");
+//     return 1;
+// } else {
+//     while ((c = getc(fp)) != EOF)
+//         //putchar(c);
+//         printf("%c", c);
+//         // printf("\n");
+//     fclose(fp);
+// }
+
+// TO READ. Only reads parent processes.
+/* int main(void)
+{
+    // Your code here 
+    char c;
+    FILE *fp;
+    printf("Opening the file text.txt to read");
+
+    fp = fopen("text.txt", "r");    
+
+    // so it prints parent fork print statement, 
+    // then child fork print statement, but prints the
+    // textfile from parent fork?
+    int text_fork = fork();
+
+    if (text_fork < 0)
+    {
+        printf("fork failed\n");
+        exit(1);
+
+    } else if (text_fork == 0)
+    {
+        printf("\nchild fork \n");
+        while ((c = getc(fp)) != EOF)
+            printf("%c", c);
+
+    } else
+    {
+        //wait(NULL);
+        printf("\nparent fork \n");
+        while ((c = getc(fp)) != EOF)
+            printf("%c", c);
+
+    }
+    
+    fclose(fp);    
+    return 0;
+} */
