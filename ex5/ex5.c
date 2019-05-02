@@ -3,6 +3,8 @@
 // the three messages to the parent and have the parent print out 
 // the messages. 
 
+
+//NOTES: https://www.geeksforgeeks.org/c-program-demonstrate-fork-and-pipe/
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -30,8 +32,6 @@ int main(void)
 
     } else if (ex5 == 0){
 
-        // close(fd[1]);
-
         printf("child\n");
         write(fd[1], msg1, MSGSIZE);
         write(fd[1], msg2, MSGSIZE);
@@ -39,17 +39,13 @@ int main(void)
 
 
     } else {
-
+        close(fd[1]);
         wait(NULL);
-        //close(fd[0]);
-
         printf("parent\n");
-        // int read_it = read(fd[0], buffer, sizeof buffer);
         while(read(fd[0], buffer, sizeof buffer) != 0){
             printf("%s\n", buffer);
         }
 
-        //write(STDOUT_FILENO, buffer, read_it);
     }
        
     return 0;
