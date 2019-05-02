@@ -18,17 +18,12 @@ int main(void)
 {
     // Your code here
     //fork a child process
-    char buffer[MSGSIZE];
-    int fd[2];
+    char buffer[MSGSIZE]; // write to buffer
+    int fd[2]; // create pipe array
+    pipe(fd); // create the pipe and pop fd
 
-    //pipe(pid); //pipe the fork
 
-    // if (pipe(fd) < 0)
-    // {
-    //     printf("fork failed!");
-    //     exit(1);
-
-    int ex5 = fork();
+    int ex5 = fork(); // create fork
     if (ex5 < 0) {
         printf("fork failed\n");
         exit(1);
@@ -36,14 +31,16 @@ int main(void)
     } else if (ex5 == 0){
 
         printf("child\n");
-        int written = write(fd[1], msg1, MSGSIZE);
-        int written = write(fd[1], msg2, MSGSIZE);
-        int written = write(fd[1], msg3, MSGSIZE);
+        write(fd[1], msg1, MSGSIZE);
+        write(fd[1], msg2, MSGSIZE);
+        write(fd[1], msg3, MSGSIZE);
 
     } else {
 
+        wait(NULL);
+
         printf("parent\n");
-        int read_it = read(0, buffer, sizeof buffer);
+        int read_it = read(fd[0], buffer, sizeof buffer);
 
         write(STDOUT_FILENO, buffer, read_it);
     }
