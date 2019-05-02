@@ -41,9 +41,13 @@ int main(void)
 
         printf("parent\n");
         int read_it = read(fd[0], buffer, sizeof buffer);
+        while(read_it != 0){
+            printf("%s\n", buffer);
+        }
 
-        write(STDOUT_FILENO, buffer, read_it);
+        //write(STDOUT_FILENO, buffer, read_it);
     }
-       
+    // fclose(fd);
+    close(ex5);   
     return 0;
 }
