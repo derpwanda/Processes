@@ -56,6 +56,9 @@ int main(void)
         }
 
     }
-       
+    //we should close both end of the pipe. 
+    //write is closed in read
+    //we close read here
+    close(fd[0]);   
     return 0;
 }
