@@ -30,24 +30,27 @@ int main(void)
 
     } else if (ex5 == 0){
 
+        // close(fd[1]);
+
         printf("child\n");
         write(fd[1], msg1, MSGSIZE);
         write(fd[1], msg2, MSGSIZE);
         write(fd[1], msg3, MSGSIZE);
 
+
     } else {
 
         wait(NULL);
+        //close(fd[0]);
 
         printf("parent\n");
-        int read_it = read(fd[0], buffer, sizeof buffer);
-        while(read_it != 0){
+        // int read_it = read(fd[0], buffer, sizeof buffer);
+        while(read(fd[0], buffer, sizeof buffer) != 0){
             printf("%s\n", buffer);
         }
 
         //write(STDOUT_FILENO, buffer, read_it);
     }
-    // fclose(fd);
-    close(ex5);   
+       
     return 0;
 }
