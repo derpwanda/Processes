@@ -21,6 +21,9 @@ and `clock_gettime()` should work just fine.
 int main()
 {
     // Your code here
-    
+    struct timespec start, end;
+
+    int clock_gettime(CLOCK_REALTIME, start);
+    int clock_gettime(CLOCK_REALTIME, end);    
     return 0;
 }
