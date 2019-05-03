@@ -24,6 +24,10 @@ int main(void)
     int fd[2]; // create pipe array
     pipe(fd); // create the pipe and pop fd
 
+    if (pipe(fd) < 0) {
+        fprintf(stderr, "pipe failed\n");
+        exit(1);
+    }
 
     int ex5 = fork(); // create fork
     if (ex5 < 0) {
