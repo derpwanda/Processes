@@ -21,6 +21,21 @@ and `clock_gettime()` should work just fine.
 int main()
 {
     // Your code here
+    struct timespec start, stop;
+    // time_t tv_sec; //seconds
+    // long tv_nsec; //nanoseconds
+    long timediff;
+
+    int i; 
+    clock_gettime(CLOCK_REALTIME, &start); //red squiggly why?
+
+    for (i = 0; i < number_iter; i++){
+        write(fileno(stdout), NULL, 0); //empty write to stdout? fileno?
+        clock_gettime(CLOCK_REALTIME, &stop);
+    }
+
+    timediff = BILLION * (stop.tv_sec - start.tv_sec) + (stop.tv_nsec - start.tv_nsec);
     
+    printf("%ld\n", timediff); //%ld suggested by gcc
     return 0;
 }
